@@ -1,9 +1,11 @@
 
-{-exercise 1, validating credit cards: In order to check a credit card number is valid we perform a check sum. This involves the following steps:
+{-exercise 1, validating credit cards: In order to check a credit card number
+is valid we perform a check sum. This involves the following steps:
 1. Starting from the last digit we double every other digit e.g.
 [1,2,3,4] -> [2,2,6,4], [1,2,3]->[1,4,3]
 2. We then sum the digits e.g. digitsSum [1,12,4] = 1 + 1 + 2 + 4
-3. If the sum of the digits is equal to 0 mod 10 i.e. if the unit digit is equal to zero then the card is valid.-}
+3. If the sum of the digits is equal to 0 mod 10 i.e. if the unit digit is
+equal to zero then the card is valid.-}
 
 import Data.Char
 
