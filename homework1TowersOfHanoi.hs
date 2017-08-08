@@ -9,7 +9,10 @@ threeHanoi 1 x y z = [(x,z)]
 threeHanoi 2 x y z = [(x,y), (x,z), (y,z)]
 threeHanoi n x y z = (threeHanoi (n-1) x z y) ++ [(x,z)] ++ (threeHanoi (n-1) y x z)
 
-{- Note this strategy works and is optimal i.e. it transfers all of the disks to the required peg and any strategy must minimally transfer the first (n-1) pegs, then the last peg and then the other (n-1). Hence we get that that the number of moves required satisfies:
+{- Note this strategy works and is optimal i.e. it transfers all of the disks to the
+required peg and any strategy must minimally transfer the first (n-1) pegs, then the
+last peg and then the other (n-1). Hence we get that that the number of moves required
+satisfies:
 
 H_1 = 1
 H_n = 1 + 2*H_{n-1}
@@ -20,9 +23,12 @@ This is easy to see if we define H'_n = H_{n}+1. Then we get:
 H'_1 = 2
 H'_n = H_n + 1= 2*(H{n-1}) + 2 = 2*(H'_{n-1}-1) + 2 = 2*H'_{n+1} -}
 
--- tower of Hanoi with 4 pegs, most naive implementation which uses the Frame-Stewart algorithm. This says one should first move k disks to an intermediary peg,
--- then move the remaining (n-k) to the target peg and then move the k disks to the target peg where k is chosen so that this is minimal. It is conjectured but
--- not proven that this is an optimal strategy (i.e. that this strategy always leads to a minimal number of moves). 
+{- tower of Hanoi with 4 pegs, this is the most naive implementation which uses the
+Frame-Stewart algorithm. This says one should first move k disks to an intermediary peg,
+then move the remaining (n-k) to the target peg and then move the k disks to the
+target peg where k is chosen so that this strategy minimises the number of moves.
+It is conjectured but not proven (even for four pegs!) that this is an optimal strategy
+(i.e. that this strategy always minimises the total number of required moves). -}
 
 fourHanoi :: Integer -> Peg a -> Peg a-> Peg a -> Peg a-> [Move a]
 fourHanoi 0 x y z w = []
@@ -32,7 +38,9 @@ fourHanoi 3 x y z w = [(x,y), (x,z),(x,w),(z,w),(y,w)]
 fourHanoi n x y z w = fst (a,b) where
                                   (a,b)= minLengthElement l
                                   l=map f [1..n-1]
-                                  f k = g (fourHanoi (n-k) x y w z ++ threeHanoi k x y w ++ fourHanoi (n-k) z x y w) where
+                                  f k = g (fourHanoi (n-k) x y w z
+                                           ++ threeHanoi k x y w
+                                           ++ fourHanoi (n-k) z x y w)
                                   g xs = (xs, length xs)
                                   
 minLengthElement :: [(a,Int)] -> (a,Int)
@@ -42,14 +50,15 @@ minLengthElement ((x,n) : xs) | n < snd(minLengthElement xs) = (x,n)
                               | otherwise = minLengthElement xs
 
                               
---length fourHanoi 15 "a" "b" "c" "d" does give 29 as it should but is quite slow
+--length fourHanoi 15 "a" "b" "c" "d" does give 29 as it should but is rather slow.
 
 
---Here is an implementation (essentially from: https://stackoverflow.com/a/3615658/8014727) with a specific k, though a general formula for which k works
---is not known:
--- s - source
--- t - target
--- i i intermediate peg
+{-Here is an implementation (essentially from: https://stackoverflow.com/a/3615658/8014727) with a specific k,
+though a general formula for which k works
+is not known:
+ s - source
+ t - target
+ i i intermediate peg -}
 
 frameStewartHanoi :: Integer -> [Peg a] -> [Move a]
 frameStewartHanoi 0 ps = []
