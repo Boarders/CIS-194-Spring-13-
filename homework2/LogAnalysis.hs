@@ -59,12 +59,12 @@ whatWentWrong ls = (f.inOrder.build) errorList
   where errorList = filter (severeError) ls
         f = map (extractString)
 
-whatWentWrong' :: [LogMessage] -> [String]
-whatWentWrong' [] =[]
-whatWentWrong' ls = (f.inOrder.build) ls
-  where f ls = map (\msg -> (extractString (msg)) ++ "/n") ls
+noDigitsWord :: String -> Bool
+noDigitsWord xs = not (any ((Data.Char.isDigit)) xs)
 
-  
-    
+noDigits :: [String] -> [String]
+noDigits = filter (noDigitsWord)
+
+whatWentWrong' = noDigits.whatWentWrong
   
             
